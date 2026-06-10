@@ -26,12 +26,12 @@ test.only('UI Controls', async ({page})=>{
     
     //assertion 
     console.log("Checking Radio Button: "+ await radioBtn.isChecked())
-    console.log("Checking T&Cs box: "+ await termsBox.isChecked())
+    console.log("Checking T&Cs box before: "+ await termsBox.isChecked())
     await expect(radioBtn).toBeChecked()
     await expect(termsBox).toBeChecked()
     
     await termsBox.uncheck()
-    console.log("Checking T&Cs box: "+ await termsBox.isChecked())
+    console.log("Checking T&Cs box after: "+ await termsBox.isChecked())
     expect( await termsBox.isChecked()).toBeFalsy()//opposite is toBetruthy
     
     // await signInBtn.click()
