@@ -95,7 +95,7 @@ test('UI Controls', async ({page})=>{
     // await page.pause()
 });
 
-test.only('Child windows handler', async ({ browser }) => {
+test('Child windows handler', async ({ browser }) => {
   //create fresh(new) instance of broswer- Context defaults
   const context = await browser.newContext()
   const page = await context.newPage()

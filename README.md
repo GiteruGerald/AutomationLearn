@@ -9,7 +9,7 @@
 
 2. cd into the **AUTOMATIONLEARN** folder and run `npm install`
 
-3. Copy .env.example into .env file(or simply run cp .env.example .env on terminal)
+3. Copy `.env.example` into `.env` file(or simply run `cp .env.example .env` on terminal)
 
 4. Open .env file and adjust parameters
 
