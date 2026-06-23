@@ -1,4 +1,4 @@
-const { test } = require("@playwright/test");
+const { test, expect } = require("@playwright/test");
 
 
 test.only('Demo App', async ({page})=>{
@@ -28,7 +28,15 @@ test.only('Demo App', async ({page})=>{
         }
     }
 
-    await page.pause()
+    await page.locator("[routerlink*='cart']").click()
+
+    await page.locator("div li").first().waitFor()
+
+    const bool =  await page.locator('h3:has-text("ZARA COAT 3")').isVisible()
+    // const bool =  await page.locator("h3:has-text(`productName`)").isVisible() //todo:Check how to replace text with variable
+    expect(bool).toBeTruthy()
+
+    // await page.pause()
 
     //ZARA COAT 3
 
