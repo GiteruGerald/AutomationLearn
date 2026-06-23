@@ -58,6 +58,13 @@ export default defineConfig({
       },
     },
     // {
+    //   name: 'webkit',
+    //   use: {
+    //     ...devices['Desktop Safari'],
+    //     headless: false,     // optional, set true if you want headless
+    //   },
+    // },
+    // {
     //   name: 'Microsoft Edge (system)',
     //   use: {
     //     ...devices['Desktop Edge'],
