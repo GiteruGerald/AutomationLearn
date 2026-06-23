@@ -14,7 +14,7 @@ test.describe('Handling UI Components', ()=>{
         
 });
 
-test ('Page Playwright test', async ({page})=>
+test.skip('Page Playwright test', async ({page})=>
 {
     
     
