@@ -61,8 +61,8 @@ test.only('Demo App', async ({page})=>{
     await page.locator('.action__submit').click()
 //Assertion to confirm that order was submitted
     await expect(page.locator('.hero-primary')).toHaveText(' Thankyou for the order. ')
-    const orderText = await page.locator(".em-spacer-1 .ng-star-inserted").first().textContent()
-    const currentOrderId = orderText.split("|")[1]
+    const currentOrderId = await page.locator(".em-spacer-1 .ng-star-inserted").first().textContent()
+    // const currentOrderId = orderText.split("|")[1]
 
     console.log("Current Order - " + currentOrderId)
 
@@ -87,6 +87,8 @@ test.only('Demo App', async ({page})=>{
             break;
         }
     
+        const orderIdDetails = await page.locator('.col-text').textContent()
+        expect(currentOrderId.includes(orderIdDetails)).toBeTruthy()
     }
-    await page.pause()
+
 });
