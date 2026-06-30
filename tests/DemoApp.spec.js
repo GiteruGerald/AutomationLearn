@@ -61,13 +61,32 @@ test.only('Demo App', async ({page})=>{
     await page.locator('.action__submit').click()
 //Assertion to confirm that order was submitted
     await expect(page.locator('.hero-primary')).toHaveText(' Thankyou for the order. ')
-    const orderId = await page.locator(".em-spacer-1 .ng-star-inserted").first().textContent()
-    console.log(orderId)
+    const orderText = await page.locator(".em-spacer-1 .ng-star-inserted").first().textContent()
+    const currentOrderId = orderText.split("|")[1]
 
+    console.log("Current Order - " + currentOrderId)
+
+    // await page.pause()
 //REDIRECT to orders page
     await page.locator("[routerlink*='order']").first().click()
     
-    // Count no of rows
-    const rowCount = await page.locator('tbody tr').count()
-    console.log(rowCount)
+    // Retrieve no of rows and extract Order Ids from the Order History page
+    const orderRows = await page.locator('tbody tr')
+    await orderRows.last().waitFor()
+
+    const allOrderIds = await orderRows.locator('th').allTextContents()
+
+    console.log("All Order Ids: "+allOrderIds)
+    // console.log("No of Order rows: " + await orderRows.count())
+    const ordersCount = await orderRows.count()
+    for (let i=0; i <= ordersCount; i++){
+        const orderId = await orderRows.locator('th').nth(i).textContent()
+        console.log("Looping through Order Id: " + orderId)
+        if( currentOrderId.includes(orderId) ){
+            await orderRows.locator('button:has-text("View")').nth(i).click()
+            break;
+        }
+    
+    }
+    await page.pause()
 });
