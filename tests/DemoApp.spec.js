@@ -2,9 +2,9 @@ const { test, expect } = require("@playwright/test");
 
 
 test.only('Demo App', async ({page})=>{
-    await page.goto(process.env.DEMO_URL)
-    await page.locator('#userEmail').fill(process.env.DEMO_USERNAME)
-    await page.locator("[type='password']").fill(process.env.DEMO_PWD)
+    await page.goto(process.env.DEMOAPP_URL)
+    await page.locator('#userEmail').fill(process.env.DEMOAPP_USERNAME)
+    await page.locator("[type='password']").fill(process.env.DEMOAPP_PWD)
     await page.locator("#login").click()
  //REDIRECT to PRODUCTS LISTING page   
     await page.waitForLoadState('networkidle');
@@ -68,11 +68,14 @@ test.only('Demo App', async ({page})=>{
 
     // await page.pause()
 //REDIRECT to orders page
-    await page.locator("[routerlink*='order']").first().click()
+    // await page.locator("[routerlink*='order']").first().click()
+    await page.locator("button[routerlink*='order']").click() //added tagname to reduce inspected elements
     
+    //wait for table to load up
+    await page.locator('tbody').waitFor()
     // Retrieve no of rows and extract Order Ids from the Order History page
     const orderRows = await page.locator('tbody tr')
-    await orderRows.last().waitFor()
+    // await orderRows.last().waitFor()
 
     const allOrderIds = await orderRows.locator('th').allTextContents()
 
@@ -80,7 +83,7 @@ test.only('Demo App', async ({page})=>{
     // console.log("No of Order rows: " + await orderRows.count())
     const ordersCount = await orderRows.count()
     for (let i=0; i <= ordersCount; i++){
-        const orderId = await orderRows.locator('th').nth(i).textContent()
+        const orderId = await orderRows.nth(i).locator('th').textContent()
         console.log("Looping through Order Id: " + orderId)
         if( currentOrderId.includes(orderId) ){
             await orderRows.locator('button:has-text("View")').nth(i).click()
