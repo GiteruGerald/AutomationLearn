@@ -1,7 +1,7 @@
 const { test, expect } = require("@playwright/test");
 
 
-test.only('Demo App', async ({page})=>{
+test('Demo App', async ({page})=>{
     await page.goto(process.env.DEMOAPP_URL)
     await page.locator('#userEmail').fill(process.env.DEMOAPP_USERNAME)
     await page.locator("[type='password']").fill(process.env.DEMOAPP_PWD)
@@ -56,7 +56,7 @@ test.only('Demo App', async ({page})=>{
         }
     }
 
-    await expect(page.locator(".user__name [type='text']").first()).toHaveText(process.env.DEMO_USERNAME)
+    await expect(page.locator(".user__name [type='text']").first()).toHaveText(process.env.DEMOAPP_USERNAME)
 
     await page.locator('.action__submit').click()
 //Assertion to confirm that order was submitted
