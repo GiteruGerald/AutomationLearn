@@ -1,6 +1,6 @@
 const {test, expect } = require("@playwright/test")
 
-test.only('Playwright Special Locators',async({page})=>{
+test('Playwright Special Locators',async({page})=>{
     await page.goto(process.env.UNIQUEAPP_URL)
 
     await page.getByLabel('Check me out if you Love IceCreams!').click()
