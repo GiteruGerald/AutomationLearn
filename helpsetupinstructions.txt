@@ -1,0 +1,37 @@
+# If on windows, set up as below
+set NODE_EXTRA_CA_CERTS=C:\Users\Desktop\cert.pem
+
+echo %NODE_EXTRA_CA_CERTS%
+
+npx playwright test --headed
+npx playwright test --ui
+
+{
+      name: 'Google Chrome (system)',
+      use: {
+        ...devices['Desktop Chrome'],
+        channel: 'chrome',   // tells Playwright to use the Chrome you already use for browsing
+        headless: false,     // optional, set true if you want headless
+      },
+    },
+    {
+      name: 'Microsoft Edge (system)',
+      use: {
+        ...devices['Desktop Edge'],
+        channel: 'msedge',   // uses your installed Edge
+      },
+    },
+
+
+# Sampletest
+If Id is present
+css -> tagname#id (or ) #id
+
+If class attribute is present
+css -> tagname.class (or) .class
+
+Write css based on any attribute
+css -> parenttagame >> childtagname
+
+If needs to write the locator based on text
+text=''
