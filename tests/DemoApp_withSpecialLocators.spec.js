@@ -1,7 +1,7 @@
 const { test, expect } = require("@playwright/test");
 
 
-test.only('Demo App With Special Locators', async ({page})=>{
+test('Demo App With Special Locators', async ({page})=>{
     await page.goto(process.env.DEMOAPP_URL)
     await page.getByPlaceholder('email@example.com').fill(process.env.DEMOAPP_USERNAME)
     await page.getByPlaceholder('enter your passsword').fill(process.env.DEMOAPP_PWD)
