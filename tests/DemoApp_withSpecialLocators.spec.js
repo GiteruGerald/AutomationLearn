@@ -54,7 +54,7 @@ test.only('Demo App With Special Locators', async ({page})=>{
         const orderId = await orderRows.nth(i).locator('th').textContent()
         console.log("Looping through Order Id: " + orderId)
         if( currentOrderId.includes(orderId) ){
-            await orderRows.locator('button:has-text("View")').nth(i).click()
+            await orderRows.getByRole('button',{name:'View'}).nth(i).click()
             break;
         }
     
