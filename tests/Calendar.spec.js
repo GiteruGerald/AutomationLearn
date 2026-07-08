@@ -1,6 +1,6 @@
 const {test, expect} = require("@playwright/test");
 
-test.only('Calendar validations',async({page})=>{
+test('Calendar validations',async({page})=>{
     await page.goto(process.env.CALENDARPRACTICE_URL)
 
     const monthNo = '7'
