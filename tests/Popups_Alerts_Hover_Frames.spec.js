@@ -1,6 +1,6 @@
 const { test, expect } = require("@playwright/test");
 
-test.only("Popup validations", async({page})=>{
+test("Popup validations", async({page})=>{
     await page.goto(process.env.POPUPAPP_URL)
     // await page.goto('http://google.com')
     // await page.goBack()
