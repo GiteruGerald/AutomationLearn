@@ -1,16 +1,30 @@
+// Save session storage
+// -> Login using UI then store all session content into a JSON file which can then be injected into a new browser Context
+
 const { test, expect } = require("@playwright/test");
 
+let webContext
 
-test('Demo App', async ({page})=>{
+test.beforeAll(async ({browser})=>{
+    const context = await browser.newContext()
+    const page = await context.newPage()
+
     await page.goto(process.env.DEMOAPP_URL)
     await page.locator('#userEmail').fill(process.env.DEMOAPP_USERNAME)
     await page.locator("[type='password']").fill(process.env.DEMOAPP_PWD)
     await page.locator("#login").click()
- //REDIRECT to PRODUCTS LISTING page   
     await page.waitForLoadState('networkidle');
+
+    await context.storageState({path: 'session_state.json'}) //saves session content
+    webContext = await browser.newContext({storageState: 'session_state.json'}) //injects existing storage data
+
+})
+
+test('Demo App', async ({})=>{
+    const page = await webContext.newPage()
+     await page.goto(process.env.DEMOAPP_URL)
+
     await page.locator(".card-body b").first().waitFor()
-    
-    // const titles = await page.locator(".card-body b").allTextContents()
     const products = await page.locator(".card-body")
     const productsCount =  await products.count()
     
@@ -95,3 +109,14 @@ test('Demo App', async ({page})=>{
     expect(currentOrderId.includes(orderIdDetails)).toBeTruthy()
 
 });
+
+test('Test Case 2',async({})=>{ //To verify use case of saving session storage. When having multiple test cases, login execution will happen only once
+    const page = await webContext.newPage()
+    await page.goto(process.env.DEMOAPP_URL)
+
+    const products = await page.locator(".card-body")
+    await page.locator(".card-body b").first().waitFor()
+    
+    const titles = await page.locator(".card-body b").allTextContents()
+    console.log(titles)
+})
