@@ -1,4 +1,4 @@
-const {test, expect} = require('@playwright/test');
+const {test, expect, request} = require('@playwright/test');
 
 test.describe('Handling UI Components', ()=>{
     
@@ -7,6 +7,7 @@ test.describe('Handling UI Components', ()=>{
             //create fresh(new) instance of broswer- Context defaults
             const context = await browser.newContext()
         const page = await context.newPage()
+        
         await page.goto("https://google.com")
         
         console.log (await page.title())
@@ -14,31 +15,36 @@ test.describe('Handling UI Components', ()=>{
         
 });
 
-test.skip('Page Playwright test', async ({page})=>
+test.only('Page Playwright test', async ({page})=>
 {
     
     
-    await page.goto(process.env.WEBSITE_URL)
+    await page.route('**/*.{css,jpg,png}',
+            route => {
+                route.abort() //aborting network calls
+            }
+        )
+    await page.goto(process.env.PRACTISE_WEB_URL)
     //get title - assertion
-    
     console.log (await page.title())
-    await expect(page).toHaveTitle("Signin | Diamond Trust Bank Kenya")
+    // await expect(page).toHaveTitle("Signin | Diamond Trust Bank Kenya")
     //css,  type, fill
-    await page.locator('[type="text"]').fill(process.env.UNAME)
+    await page.locator('[type="text"]').fill(process.env.PRACTISE_UNAME)
     
-    await page.locator('[type="password"]').fill(process.env.PWD)
+    await page.locator('[type="password"]').fill(process.env.PRACTISE_PWD)
     
     await page.getByRole('button', { name: 'Sign In' }).click()
-    
+    page.on('request',request => console.log(request.url())) // to trace network calls
+    page.on('response',response => console.log(response.url(), response.status()))
     // await page.pause()
     const cardTitles = page.locator(".operation-font")
     // console.log(await cardTitles.first().textContent()) // has wait time till element found
     
-    // await page.waitForLoadState('networkidle') // refer to documentation, its a bit flaky(doesnt work all the time)
-    await cardTitles.last().waitFor()
-    const allTitles = await cardTitles.allTextContents() // does not wait to find element. can return empty array if page load is too fast; use NetworkIdle(discouraged) or Waitfor on element(singular element) to counter this
-    // console.log(title)
-    console.log(allTitles)
+    await page.waitForLoadState('networkidle') // refer to documentation, its a bit flaky(doesnt work all the time)
+    // await cardTitles.last().waitFor()
+    // const allTitles = await cardTitles.allTextContents() // does not wait to find element. can return empty array if page load is too fast; use NetworkIdle(discouraged) or Waitfor on element(singular element) to counter this
+    // // console.log(title)
+    // console.log(allTitles)
     // await cardTitles.nth(1).click() // second title
     // await page.pause()
     
