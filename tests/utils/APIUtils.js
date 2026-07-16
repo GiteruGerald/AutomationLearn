@@ -12,7 +12,7 @@ class APIUtils
     )
     const loginResponseJson = await loginResponse.json() 
     let loginToken = loginResponseJson.token 
-    console.log('Login Token: '+loginToken)
+    // console.log('Login Token: '+loginToken)
     return loginToken
     }
 
