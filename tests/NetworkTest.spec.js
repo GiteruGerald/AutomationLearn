@@ -23,7 +23,7 @@ test.beforeAll(async ()=>{
     
 //Verify if order created is showing in history page using APi
 
-test('Intercepting Network equests', async({page})=>{
+test('Intercepting Network requests', async({page})=>{
     
     
     await page.addInitScript(value =>{
@@ -31,6 +31,7 @@ test('Intercepting Network equests', async({page})=>{
     }, response.token)
 
     await page.goto(process.env.DEMOAPP_URL)
+    // await page.locator('.card-body b').first().waitFor()
 
     await page.route('https://rahulshettyacademy.com/api/ecom/order/get-orders-for-customer/*', //Using asterisk as a wildcard to accept any user id
         async route=>{
@@ -45,7 +46,6 @@ test('Intercepting Network equests', async({page})=>{
     )
     await page.locator("button[routerlink*='order']").click() //added tagname to reduce inspected elements
     await page.waitForResponse('https://rahulshettyacademy.com/api/ecom/order/get-orders-for-customer/*')
-    // await page.pause()
-    console.log(await page.locator('.mt-4').textContent())
+    await expect(page.locator('.mt-4')).toHaveText('You have No Orders to show at this time. Please Visit Back Us ')
 
 })
