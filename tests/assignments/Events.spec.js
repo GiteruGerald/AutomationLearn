@@ -1,4 +1,6 @@
-const {test } = require("@playwright/test")
+const {test, request } = require("@playwright/test")
+const {ApiUtils} = require('./assignment_utils/ApiUtils')
+
 
 const SIX_EVENTS_RESPONSE = {
   data: [
@@ -28,6 +30,19 @@ test('Sandbox Banner Visibility with API Mocking',async({page})=>{
     await page.getByPlaceholder('you@email.com').fill(process.env.EVENTSHUB_USERNAME)
     await page.locator('#password').fill(process.env.EVENTSHUB_PWD)
     await page.getByRole('button',{name:'Sign In'}).click()
+
+    await page.route(`${process.env.EVENTSHUB_URL}/api/events*`,
+    // await page.route('**/api/events**',
+      async route=>{
+        const realResponse = await page.request.fetch(route.request())
+        let sixEventsBody = JSON.stringify(SIX_EVENTS_RESPONSE)
+        route.fulfill({
+          sixEventsBody
+        })
+      }
+    )
+
+
     await page.getByRole('link',{name:'Browse Events →'}).click()
 
     await page.pause()
