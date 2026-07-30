@@ -2,6 +2,7 @@ const {test, request } = require("@playwright/test")
 const {ApiUtils} = require('./assignment_utils/ApiUtils')
 
 
+
 const SIX_EVENTS_RESPONSE = {
   data: [
     { id: 1, title: 'Tech Summit 2025', category: 'Conference', eventDate: '2025-06-01T10:00:00.000Z', venue: 'HICC', city: 'Hyderabad', price: '999', totalSeats: 200, availableSeats: 150, imageUrl: null, isStatic: false },
@@ -24,12 +25,23 @@ const FOUR_EVENTS_RESPONSE = {
   pagination: { page: 1, totalPages: 1, total: 4, limit: 12 },
 };
 
-// test.beforeAll()
+const loginPayload = {
+    "email": process.env.EVENTSHUB_USERNAME,
+    "password": process.env.EVENTSHUB_PWD
+}
+let authToken
+test.beforeAll(async({})=>{
+  const apiContext = await request.newContext();
+  const apiUtils = new ApiUtils(apiContext, loginPayload)
+  authToken = await apiUtils.getAuthToken()
+
+})
+
 test('Sandbox Banner Visibility with API Mocking',async({page})=>{
+    await page.addInitScript(value =>{
+      window.localStorage.setItem('eventhub_token', value)
+    },authToken)
     await page.goto(process.env.EVENTSHUB_URL)
-    await page.getByPlaceholder('you@email.com').fill(process.env.EVENTSHUB_USERNAME)
-    await page.locator('#password').fill(process.env.EVENTSHUB_PWD)
-    await page.getByRole('button',{name:'Sign In'}).click()
 
     await page.route(`${process.env.EVENTSHUB_URL}/api/events*`,
     // await page.route('**/api/events**',
