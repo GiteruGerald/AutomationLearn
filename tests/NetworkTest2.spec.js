@@ -2,8 +2,8 @@ const { test, request, expect } = require("@playwright/test");
 const {APIUtils} = require('./utils/APIUtils.js')
 
 const loginPayload = {
-    userEmail: "piperbryce51@gmail.com",
-    userPassword: "Mander7436"
+    userEmail: process.env.DEMOAPP_USERNAME,
+    userPassword: process.env.DEMOAPP_PWD
 }
 let loginToken
 
