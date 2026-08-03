@@ -200,7 +200,7 @@ test("Banner is NOT visible when 4 events are returned", async ({ page }) => {
     let fourEventsBody = JSON.stringify(FOUR_EVENTS_RESPONSE);
 
     route.fulfill({
-      contentType: "text/plain",
+      contentType: "application/json",
       status: 200,
       body: fourEventsBody,
     });
