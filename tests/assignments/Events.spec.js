@@ -205,4 +205,12 @@ test("Banner is NOT visible when 4 events are returned", async ({ page }) => {
       body: fourEventsBody,
     });
   });
+
+  //Verify cards are loaded
+  const eventCards = await page.locator("[data-testid*='event-card']")
+  await expect(eventCards.first()).toBeVisible()
+  await expect(eventCards).toHaveCount(4)
+
+  //Verify banner is hidden
+  await expect(page.getByText('Your sandbox holds up to')).toBeHidden()
 });
