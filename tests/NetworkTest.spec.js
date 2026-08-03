@@ -45,6 +45,7 @@ test('Intercepting Network requests', async({page})=>{
         }
     )
     await page.locator("button[routerlink*='order']").click() //added tagname to reduce inspected elements
+    // await page.pause()
     await page.waitForResponse('https://rahulshettyacademy.com/api/ecom/order/get-orders-for-customer/*')
     await expect(page.locator('.mt-4')).toHaveText('You have No Orders to show at this time. Please Visit Back Us ')
 
